@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <ExtensionManifest
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   Version="8.0"
   ExtensionBundleId="com.animeedit.ai.panel"
   ExtensionBundleVersion="1.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  ExtensionBundleName="AnimeEdit AI">
 
   <ExtensionList>
     <Extension Id="com.animeedit.ai.panel" Version="1.0.0" />
@@ -11,26 +12,28 @@
 
   <ExecutionEnvironment>
     <HostList>
-      <Host Name="AfterEffects" Version="17.0" />
+      <Host Name="AEFT" Version="[17.0,99.9]" />
     </HostList>
     <LocaleList>
       <Locale Code="All" />
     </LocaleList>
-    <DefaultLocale Code="en_US" />
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="6.0" />
+    </RequiredRuntimeList>
   </ExecutionEnvironment>
 
   <DispatchInfoList>
     <Extension Id="com.animeedit.ai.panel">
       <DispatchInfo>
         <Resources>
-          <MainPath>../index.html</MainPath>
-          <CEFCommandLine>--disable-web-security</CEFCommandLine>
+          <MainPath>index.html</MainPath>
+          <ScriptPath>host/ae.jsx</ScriptPath>
+          <CEFCommandLine>
+            <Parameter>--disable-web-security</Parameter>
+          </CEFCommandLine>
         </Resources>
         <Lifecycle>
           <AutoVisible>true</AutoVisible>
-          <StartOn>
-            <StartOnEvent>com.adobe.csxs.events.ApplicationInitialized</StartOnEvent>
-          </StartOn>
         </Lifecycle>
         <UI>
           <Type>Panel</Type>
@@ -49,13 +52,6 @@
               <Height>1200</Height>
             </MaxSize>
           </Geometry>
-          <Icons>
-            <Icon Type="Normal">../assets/icon-normal.png</Icon>
-            <Icon Type="RollOver">../assets/icon-rollover.png</Icon>
-            <Icon Type="Disabled">../assets/icon-disabled.png</Icon>
-            <Icon Type="DarkNormal">../assets/icon-darknormal.png</Icon>
-            <Icon Type="DarkRollOver">../assets/icon-darkrollover.png</Icon>
-          </Icons>
         </UI>
       </DispatchInfo>
     </Extension>

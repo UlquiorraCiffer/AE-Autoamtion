@@ -29,9 +29,12 @@ if %errorlevel% neq 0 (
     echo.
 )
 
+REM ─── Change to backend directory ───
+cd /d "%~dp0backend"
+
 REM ─── Install dependencies ───
 echo [1/3] Installing Python dependencies...
-pip install -r backend\requirements.txt
+pip install -r requirements.txt
 if %errorlevel% neq 0 (
     echo [ERROR] pip install failed.
     pause
@@ -41,7 +44,7 @@ echo.
 
 REM ─── Run tests ───
 echo [2/3] Running test suite...
-python -m pytest backend\tests\ -v --tb=short
+python -m pytest tests\ -v --tb=short
 echo.
 
 REM ─── Start server ───

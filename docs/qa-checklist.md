@@ -207,7 +207,7 @@
 
   The full path should look like:
 
-      C:\Program Files\Adobe\Adobe After Effects 2024\Support Files\CEP\extensions\
+      C:\Program Files\Adobe\Adobe After Effects 2020\Support Files\CEP\extensions\
 
 ### 4.2 Copy the Plugin
 
@@ -223,9 +223,9 @@
 - [ ] Open **regedit** (Windows Registry Editor) as Administrator.
 - [ ] Navigate to:
 
-      HKEY_CURRENT_USER\Software\Adobe\CSXS.10
+      HKEY_CURRENT_USER\Software\Adobe\CSXS.8
 
-  > If `CSXS.10` does not exist, create it under `Software\Adobe`.
+  > If `CSXS.8` does not exist, create it under `Software\Adobe`.
 
 - [ ] Create a new **String Value** (REG_SZ):
   - Name: `PlayerDebugMode`
@@ -517,7 +517,7 @@ If all checks pass, the MVP is ready for use.
 |---|---|---|
 | `python` not found | Python not installed or not in PATH | Reinstall Python, check "Add to PATH" |
 | `pip install` fails | Missing build tools | Install Microsoft C++ Build Tools |
-| Panel not in AE menu | Plugin not in correct folder or CSXS.10 missing | Recheck `CEP\extensions` path and regedit key |
+| Panel not in AE menu | Plugin not in correct folder or CSXS.8 registry missing | Recheck `CEP\extensions` path and `CSXS.8` regedit key |
 | `Backend offline` in panel | Server not running | Start `uvicorn app.main:app` |
 | `FFmpeg not found` warning | FFmpeg not on PATH | Install FFmpeg or ignore (OpenCV fallback works) |
 | `curl` not recognized | curl not installed | Use browser for GET, or install curl |

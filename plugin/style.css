@@ -176,6 +176,17 @@ html, body {
   background: #6b45c4;
 }
 
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #1a4a7a;
+  border-color: var(--accent);
+}
+
 .btn-icon {
   background: transparent;
   color: var(--text-secondary);

@@ -25,6 +25,7 @@
   const promptInput = $('prompt-input')
   const btnAnalyze = $('btn-analyze')
   const btnApply = $('btn-apply')
+  const btnTest = $('btn-test')
   const btnSettings = $('btn-settings')
   const settingsPanel = $('settings-panel')
   const resultsSection = $('results-section')
@@ -36,6 +37,27 @@
   const statusText = $('status-text')
 
   /* ─── Helpers ─── */
+  async function testConnection() {
+    if (!csInterface) {
+      setStatus('AE not available', 'offline')
+      return
+    }
+    btnTest.disabled = true
+    setStatus('Testing connection…', 'busy')
+    try {
+      const result = await evalAE('ae.ping()')
+      if (result === 'pong') {
+        setStatus('AE connected ✓', 'online')
+      } else {
+        setStatus('Unexpected response', 'offline')
+      }
+    } catch {
+      setStatus('AE call failed', 'offline')
+    } finally {
+      btnTest.disabled = false
+    }
+  }
+
   function setStatus(text, level) {
     statusText.textContent = text
     statusDot.className = 'dot'
@@ -275,6 +297,7 @@
 
     btnAnalyze.addEventListener('click', () => analyzePrompt(promptInput.value))
     btnApply.addEventListener('click', applyActions)
+    btnTest.addEventListener('click', testConnection)
 
     btnSettings.addEventListener('click', toggleSettings)
 

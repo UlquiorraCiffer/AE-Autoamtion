@@ -24,7 +24,7 @@
       <DispatchInfo>
         <Resources>
           <MainPath>../index.html</MainPath>
-          <CEFCommandLine>--enable-nodejs --disable-web-security</CEFCommandLine>
+          <CEFCommandLine>--disable-web-security</CEFCommandLine>
         </Resources>
         <Lifecycle>
           <AutoVisible>true</AutoVisible>

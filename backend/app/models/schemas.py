@@ -23,14 +23,24 @@ class AnalyzeResponse(BaseModel):
 
 # ─── Scene Detection ───
 
-class SceneBoundary(BaseModel):
-    time_seconds: float
-    frame: int
+class DetectScenesRequest(BaseModel):
+    video_path: str = Field(..., min_length=1)
+    fps: float = 1.0
+    threshold: float = 0.3
+
+
+class SceneSegment(BaseModel):
+    start_time: float
+    end_time: float
+    motion_score: float = 0.0
+    confidence: float = 1.0
 
 
 class DetectScenesResponse(BaseModel):
-    scenes: list[SceneBoundary]
+    video_path: str
+    segments: list[SceneSegment]
     total_scenes: int
+    analysis_fps: float
 
 
 # ─── Beat Detection ───

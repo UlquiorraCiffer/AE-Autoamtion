@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.exceptions import AppError, app_error_handler, unhandled_error_handler
 from app.logger import setup_logging
-from app.routers import analyze, apply, beats, health, scenes
+from app.routers import analyze, apply, beats, health, plan, scenes
 
 import logging
 
@@ -44,6 +44,7 @@ def create_app() -> FastAPI:
     app.include_router(scenes.router)
     app.include_router(beats.router)
     app.include_router(apply.router)
+    app.include_router(plan.router)
 
     return app
 

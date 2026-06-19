@@ -21,6 +21,12 @@ def parse_prompt_locally(text: str) -> list[Action]:
         actions.append(Action(type="shake", label="Add shake effect"))
     if "flash" in lower:
         actions.append(Action(type="flash", label="Add flash effect"))
+    if "glow" in lower:
+        actions.append(Action(type="glow", label="Add glow effect"))
+    if "speed ramp" in lower or "velocity" in lower or "speed_ramp" in lower:
+        actions.append(Action(type="velocity_ramp", label="Add velocity ramp"))
+    if "remove low" in lower or "remove slow" in lower:
+        actions.append(Action(type="remove_low_energy", label="Remove low-energy segments"))
 
     if not actions:
         actions.append(

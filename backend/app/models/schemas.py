@@ -75,6 +75,39 @@ class ApplyResponse(BaseModel):
     status: str = "ok"
 
 
+# ─── Edit Plan (Decision Engine) ───
+
+class GeneratePlanRequest(BaseModel):
+    prompt: str = Field(..., min_length=1, max_length=2000)
+    segments: list[SceneSegment] = Field(..., min_length=1)
+    beats: list[Beat] = Field(default_factory=list)
+    bpm: float = 0.0
+
+
+class EffectTarget(BaseModel):
+    type: str
+    segment_index: int | None = None
+    beat_index: int | None = None
+    params: dict = {}
+
+
+class TimelineEntry(BaseModel):
+    segment_index: int
+    keep: bool = True
+    order: int
+
+
+class EditPlan(BaseModel):
+    prompt: str
+    bpm: float
+    timeline: list[TimelineEntry]
+    effects: list[EffectTarget]
+
+
+class GeneratePlanResponse(BaseModel):
+    plan: EditPlan
+
+
 # ─── Health ───
 
 class HealthResponse(BaseModel):

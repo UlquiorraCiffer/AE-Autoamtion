@@ -7,7 +7,6 @@ from app.ai.base import AIProvider
 from app.ai.utils import (
     ProviderError,
     RateLimitError,
-    TimeoutError_,
     retry_async,
 )
 from app.models.schemas import Action

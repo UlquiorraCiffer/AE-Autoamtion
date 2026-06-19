@@ -1,8 +1,5 @@
-import math
-import struct
 import tempfile
 import wave
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -46,15 +43,6 @@ def _make_click_track(
         y[start:end] = envelope * 0.9
 
     return y
-
-
-def _generate_wav(path: str, y: np.ndarray, sr: int = SAMPLE_RATE):
-    scaled = np.clip(y * 32767, -32768, 32767).astype(np.int16)
-    with wave.open(path, "w") as wf:
-        wf.setnchannels(1)
-        wf.setsampwidth(2)
-        wf.setframerate(sr)
-        wf.writeframes(scaled.tobytes())
 
 
 class TestBeatAnalyzerUnit:

@@ -17,6 +17,7 @@
     connected: false,
     analyzing: false,
     analysisResult: null,
+    editPlan: null,
   }
 
   /* ─── DOM refs ─── */
@@ -78,7 +79,6 @@
     btnApply.disabled = true
     setStatus('Analyzing…', 'busy')
 
-    // Build payload for the backend LLM router
     const payload = {
       prompt: text,
       provider: state.provider,
@@ -102,7 +102,6 @@
       btnApply.disabled = false
       setStatus('Analysis ready', 'online')
     } catch (err) {
-      // Offline fallback — still show parsed result shape for demo
       state.analysisResult = { actions: parsePromptLocally(text) }
       renderResults(state.analysisResult)
       btnApply.disabled = false
@@ -127,15 +126,23 @@
     }
 
     if (/zoom/i.test(lower) || /punch/i.test(lower)) {
-      actions.push({ type: 'zoom', label: 'Add zoom effect', params: {} })
+      actions.push({ type: 'zoom', label: 'Add zoom effect', params: { magnitude: 1.3, direction: 'in' } })
     }
 
     if (/shake/i.test(lower) || /wiggle/i.test(lower)) {
-      actions.push({ type: 'shake', label: 'Add shake effect', params: {} })
+      actions.push({ type: 'shake', label: 'Add shake effect', params: { frequency: 15, amplitude: 20 } })
     }
 
     if (/flash/i.test(lower)) {
-      actions.push({ type: 'flash', label: 'Add flash effect', params: {} })
+      actions.push({ type: 'flash', label: 'Add flash effect', params: { opacity: 80, duration_seconds: 0.05 } })
+    }
+
+    if (/glow/i.test(lower)) {
+      actions.push({ type: 'glow', label: 'Add glow effect', params: { intensity: 0.5, radius: 30 } })
+    }
+
+    if (/speed ramp|velocity/i.test(lower)) {
+      actions.push({ type: 'velocity_ramp', label: 'Add velocity ramp', params: { speed: 1.5, ramp_in: 0.2, ramp_out: 0.3 } })
     }
 
     if (actions.length === 0) {
@@ -181,10 +188,11 @@
       try {
         const script = buildExtendScript(action)
         if (script) {
-          await evalAE(script)
+          const result = await evalAE(script)
+          console.log(`[AE] ${action.type}: ${result}`)
         }
-      } catch {
-        // continue with next action
+      } catch (err) {
+        console.warn(`[AE] ${action.type} failed:`, err)
       }
     }
 
@@ -194,20 +202,41 @@
 
   /* ─── Build ExtendScript for an action ─── */
   function buildExtendScript(action) {
+    const params = action.params || {}
+    const json = JSON.stringify(params)
+
     switch (action.type) {
       case 'beat_detect':
-        return 'ae.beatDetect()'
+        return null  // handled by backend
       case 'scene_detect':
-        return 'ae.sceneDetect()'
+        return null  // handled by backend
       case 'zoom':
-        return 'ae.addZoom()'
+        return `ae.applyZoom(1, '${escapeJS(json)}')`
       case 'shake':
-        return 'ae.addShake()'
+        return `ae.applyShake(1, '${escapeJS(json)}')`
       case 'flash':
-        return 'ae.addFlash()'
+        return `ae.applyFlash('${escapeJS(json)}')`
+      case 'glow':
+        return `ae.applyGlow(1, '${escapeJS(json)}')`
+      case 'velocity_ramp':
+        return `ae.applyVelocityRamp(1, '${escapeJS(json)}')`
+      case 'split':
+        return `ae.splitLayer(${action.params.layerIndex || 1}, ${action.params.time || 0})`
+      case 'trim':
+        return `ae.trimLayer(${action.params.layerIndex || 1}, ${action.params.inTime || 0}, ${action.params.outTime || 0})`
+      case 'add_markers':
+        return `ae.addMarkers('${escapeJS(json)}')`
+      case 'reorder':
+        return `ae.reorderLayers('${escapeJS(json)}')`
+      case 'execute_plan':
+        return `ae.executePlan('${escapeJS(JSON.stringify(state.editPlan || {}))}')`
       default:
         return null
     }
+  }
+
+  function escapeJS(str) {
+    return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n')
   }
 
   /* ─── Settings toggle ─── */
@@ -224,7 +253,6 @@
 
   /* ─── Init ─── */
   async function init() {
-    // Load persisted settings
     if (csInterface) {
       try {
         const key = await evalAE('ae.getSettings()')
@@ -242,11 +270,9 @@
       }
     }
 
-    // Check backend
     checkBackend()
     setInterval(checkBackend, 15000)
 
-    // Listeners
     btnAnalyze.addEventListener('click', () => analyzePrompt(promptInput.value))
     btnApply.addEventListener('click', applyActions)
 
@@ -256,7 +282,6 @@
     providerSelect.addEventListener('change', saveSettings)
     modelSelect.addEventListener('change', saveSettings)
 
-    // Keyboard shortcut
     promptInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault()

@@ -45,16 +45,23 @@ class DetectScenesResponse(BaseModel):
 
 # ─── Beat Detection ───
 
+class DetectBeatsRequest(BaseModel):
+    audio_path: str = Field(..., min_length=1)
+
+
 class Beat(BaseModel):
     time_seconds: float
     bpm: float
     confidence: float = 1.0
+    drop_intensity: float = 0.0
 
 
 class DetectBeatsResponse(BaseModel):
+    audio_path: str
     beats: list[Beat]
     bpm: float
     total_beats: int
+    duration_seconds: float
 
 
 # ─── Apply Edit ───

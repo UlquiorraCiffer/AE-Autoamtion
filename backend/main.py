@@ -1,8 +1,11 @@
-from fastapi import FastAPI
+import uvicorn
 
-app = FastAPI(title="AnimeEdit AI Backend", version="0.1.0")
+from app.config import settings
 
-
-@app.get("/health")
-async def health_check():
-    return {"status": "ok"}
+if __name__ == "__main__":
+    uvicorn.run(
+        "app.main:app",
+        host=settings.host,
+        port=settings.port,
+        reload=settings.debug,
+    )

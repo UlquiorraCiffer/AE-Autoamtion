@@ -1,0 +1,14 @@
+{
+  "name": "animeedit-ai-plugin",
+  "version": "0.1.0",
+  "description": "AnimeEdit AI - After Effects extension panel",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "echo \"Build script TBD\"",
+    "dev": "echo \"Dev script TBD\"",
+    "test": "echo \"Test script TBD\"",
+    "lint": "echo \"Lint script TBD\""
+  },
+  "keywords": ["after-effects", "anime", "video-editing", "ai"],
+  "license": "MIT"
+}

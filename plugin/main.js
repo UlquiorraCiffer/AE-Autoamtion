@@ -36,6 +36,13 @@
   const statusDot = $('status-dot')
   const statusText = $('status-text')
 
+  /* ─── Polyfill: AbortSignal.timeout for Chromium 69 ─── */
+  function timeoutSignal(ms) {
+    var ctrl = new AbortController()
+    setTimeout(function () { ctrl.abort() }, ms)
+    return ctrl.signal
+  }
+
   /* ─── Helpers ─── */
   async function testConnection() {
     if (!csInterface) {
@@ -79,7 +86,7 @@
   /* ─── Backend communication ─── */
   async function checkBackend() {
     try {
-      const res = await fetch(`${state.backendUrl}/health`, { signal: AbortSignal.timeout(3000) })
+      const res = await fetch(`${state.backendUrl}/health`, { signal: timeoutSignal(3000) })
       if (res.ok) {
         state.connected = true
         setStatus('Backend connected', 'online')
@@ -113,7 +120,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(30000),
+        signal: timeoutSignal(30000),
       })
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`)

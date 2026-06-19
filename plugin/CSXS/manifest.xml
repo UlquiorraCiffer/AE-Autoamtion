@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest
+  Version="10.0"
+  ExtensionBundleId="com.animeedit.ai.panel"
+  ExtensionBundleVersion="1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <ExtensionList>
+    <Extension Id="com.animeedit.ai.panel" Version="1.0.0" />
+  </ExtensionList>
+
+  <ExecutionEnvironment>
+    <HostList>
+      <Host Name="AfterEffects" Version="23.0" />
+    </HostList>
+    <LocaleList>
+      <Locale Code="All" />
+    </LocaleList>
+    <DefaultLocale Code="en_US" />
+  </ExecutionEnvironment>
+
+  <DispatchInfoList>
+    <Extension Id="com.animeedit.ai.panel">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>../index.html</MainPath>
+          <CEFCommandLine>--enable-nodejs --disable-web-security</CEFCommandLine>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+          <StartOn>
+            <StartOnEvent>com.adobe.csxs.events.ApplicationInitialized</StartOnEvent>
+          </StartOn>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>AnimeEdit AI</Menu>
+          <Geometry>
+            <Size>
+              <Width>400</Width>
+              <Height>600</Height>
+            </Size>
+            <MinSize>
+              <Width>320</Width>
+              <Height>400</Height>
+            </MinSize>
+            <MaxSize>
+              <Width>800</Width>
+              <Height>1200</Height>
+            </MaxSize>
+          </Geometry>
+          <Icons>
+            <Icon Type="Normal">../assets/icon-normal.png</Icon>
+            <Icon Type="RollOver">../assets/icon-rollover.png</Icon>
+            <Icon Type="Disabled">../assets/icon-disabled.png</Icon>
+            <Icon Type="DarkNormal">../assets/icon-darknormal.png</Icon>
+            <Icon Type="DarkRollOver">../assets/icon-darkrollover.png</Icon>
+          </Icons>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>

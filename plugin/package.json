@@ -1,14 +1,20 @@
 {
   "name": "animeedit-ai-plugin",
   "version": "0.1.0",
-  "description": "AnimeEdit AI - After Effects extension panel",
-  "main": "src/index.js",
+  "description": "AnimeEdit AI — After Effects CEP extension panel",
+  "main": "index.html",
+  "cep": {
+    "id": "com.animeedit.ai.panel",
+    "version": "1.0.0",
+    "host": "AfterEffects",
+    "minVersion": "23.0"
+  },
   "scripts": {
     "build": "echo \"Build script TBD\"",
     "dev": "echo \"Dev script TBD\"",
     "test": "echo \"Test script TBD\"",
     "lint": "echo \"Lint script TBD\""
   },
-  "keywords": ["after-effects", "anime", "video-editing", "ai"],
+  "keywords": ["after-effects", "cep", "anime", "video-editing", "ai", "extendscript"],
   "license": "MIT"
 }

@@ -1,5 +1,6 @@
 import logging
 
+from app.ai import ProviderRegistry
 from app.exceptions import AnalysisError
 from app.models.schemas import Action, AnalyzeResponse
 
@@ -29,16 +30,27 @@ def parse_prompt_locally(text: str) -> list[Action]:
     return actions
 
 
-async def analyze_prompt(prompt: str, model: str, api_key: str | None = None) -> AnalyzeResponse:
+async def analyze_prompt(
+    prompt: str,
+    provider: str = "openrouter",
+    model: str = "gpt-4o-mini",
+    api_key: str | None = None,
+) -> AnalyzeResponse:
     if not prompt.strip():
         raise AnalysisError("Prompt cannot be empty")
 
-    logger.info("Analyzing prompt (model=%s, len=%d)", model, len(prompt))
+    logger.info("Analyzing prompt (provider=%s, model=%s, len=%d)", provider, model, len(prompt))
 
     if api_key:
-        pass
-
-    actions = parse_prompt_locally(prompt)
-    logger.info("Parsed %d actions from prompt", len(actions))
+        try:
+            instance = ProviderRegistry.get(provider)
+            actions = await instance.complete(prompt=prompt, model=model, api_key=api_key)
+            logger.info("LLM returned %d actions via %s", len(actions), provider)
+        except Exception as exc:
+            logger.warning("LLM analysis failed (%s), falling back to local parser", exc)
+            actions = parse_prompt_locally(prompt)
+    else:
+        logger.info("No API key provided — using local parser")
+        actions = parse_prompt_locally(prompt)
 
     return AnalyzeResponse(prompt=prompt, actions=actions)

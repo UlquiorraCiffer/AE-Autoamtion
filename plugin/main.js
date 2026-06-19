@@ -10,6 +10,7 @@
   /* ─── State ─── */
   const state = {
     apiKey: '',
+    provider: 'openrouter',
     model: 'gpt-4o-mini',
     settingsOpen: false,
     backendUrl: 'http://127.0.0.1:8000',
@@ -28,6 +29,7 @@
   const resultsSection = $('results-section')
   const resultsContent = $('results-content')
   const apiKeyInput = $('api-key')
+  const providerSelect = $('provider-select')
   const modelSelect = $('model-select')
   const statusDot = $('status-dot')
   const statusText = $('status-text')
@@ -79,6 +81,7 @@
     // Build payload for the backend LLM router
     const payload = {
       prompt: text,
+      provider: state.provider,
       model: state.model,
       api_key: state.apiKey || undefined,
     }
@@ -215,6 +218,7 @@
 
   function saveSettings() {
     state.apiKey = apiKeyInput.value.trim()
+    state.provider = providerSelect.value
     state.model = modelSelect.value
   }
 
@@ -227,8 +231,10 @@
         if (key) {
           const parsed = JSON.parse(key)
           state.apiKey = parsed.apiKey || ''
+          state.provider = parsed.provider || 'openrouter'
           state.model = parsed.model || 'gpt-4o-mini'
           apiKeyInput.value = state.apiKey
+          providerSelect.value = state.provider
           modelSelect.value = state.model
         }
       } catch {
@@ -247,6 +253,7 @@
     btnSettings.addEventListener('click', toggleSettings)
 
     apiKeyInput.addEventListener('input', saveSettings)
+    providerSelect.addEventListener('change', saveSettings)
     modelSelect.addEventListener('change', saveSettings)
 
     // Keyboard shortcut

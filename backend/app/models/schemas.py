@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 
 class AnalyzeRequest(BaseModel):
     prompt: str = Field(..., min_length=1, max_length=2000)
+    provider: str = "openrouter"
     model: str = "gpt-4o-mini"
     api_key: str | None = None
 

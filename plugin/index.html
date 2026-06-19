@@ -43,12 +43,22 @@
         <input type="password" id="api-key" placeholder="sk-..." />
       </div>
       <div class="field">
+        <label for="provider-select">Provider</label>
+        <select id="provider-select">
+          <option value="openrouter">OpenRouter</option>
+          <option value="gemini">Gemini</option>
+        </select>
+      </div>
+      <div class="field">
         <label for="model-select">Model</label>
         <select id="model-select">
           <option value="gpt-4o-mini">GPT-4o-mini</option>
           <option value="gpt-4o">GPT-4o</option>
           <option value="claude-3-haiku">Claude 3 Haiku</option>
           <option value="claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+          <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+          <option value="gemini-2.0-pro">Gemini 2.0 Pro</option>
+          <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
         </select>
       </div>
     </section>

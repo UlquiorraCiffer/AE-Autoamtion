@@ -12,4 +12,9 @@ router = APIRouter(tags=["Analyze"])
 
 @router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(body: AnalyzeRequest):
-    return await analyze_prompt(prompt=body.prompt, model=body.model, api_key=body.api_key)
+    return await analyze_prompt(
+        prompt=body.prompt,
+        provider=body.provider,
+        model=body.model,
+        api_key=body.api_key,
+    )
